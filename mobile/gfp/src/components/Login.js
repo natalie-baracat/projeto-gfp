@@ -1,5 +1,5 @@
 import { View, Text, Button, TextInput } from "react-native"
-import Estilos from "../styles/Estilos"
+import Estilos, { Cores } from "../styles/Estilos"
 
 
 export default function Login({ navigation }) {
@@ -7,8 +7,13 @@ export default function Login({ navigation }) {
         <View style={Estilos.conteudo}>
             <Text style={Estilos.loginTitle}>Boas vindas novamente!</Text>
 
-            <Text></Text>
-            <TextInput placeholder={"Digite seu nome"} />
+            <Text style={{color: "#fef"}}>Email</Text>
+            <TextInput placeholder={"Digite seu email"} />
+
+
+            <Text style={{color: "#fef"}}>Senha</Text>
+            <TextInput placeholder={"Digite a senha"} />
+            
             <Button title="Entrar" onPress={() => navigation.navigate("MenuDrawer")} />
         </View>
     )

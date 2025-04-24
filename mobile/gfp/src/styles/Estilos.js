@@ -18,6 +18,9 @@ const Estilos = {
         textAlign: "center",
         fontSize: 30,
         color: Cores.secundaria
+    },
+    btnEntrar: {
+        backgroundColor: Cores.principal
     }
 }
 
