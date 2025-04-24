@@ -1,7 +1,8 @@
 import { BD } from "../db.js";
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken";
 
-// volto aqui depois
+
 const SECRET_KEY = "chave_api_gfp"
 
 class rotasUsuarios {
@@ -33,36 +34,54 @@ class rotasUsuarios {
 
     // rota de login
 
-    static async loginUsuario(req, res){
+    static async login(req, res){
         const { email, senha } = req.body
 
         try {
             // validaçao
-            const resultado = await BD.query(`SELECT id, nome, email, senha
-                                        FROM usuarios
-                                        WHERE email = $1`, [email])
+            const resultado = await BD.query(`
+                SELECT *
+                FROM usuarios
+                WHERE email = $1 AND ativo = true`, 
+                [email]
+            )
+
             if (resultado.rows === 0) {
-                return res.status(401).json({message: "Email ou senha inválido"})
+                return res.status(401).json({message: "Email inválido"})
             }
+
             const usuario = resultado.rows[0]
             const senhaValida = await bcrypt.compare(senha, usuario.senha)
 
             if (!senhaValida) {
-                return res.status(401).json({message: "Email ou senha inválido"})
+                return res.status(401).json({message: "Senha incorreta"})
             }
 
             // geracao de um novo token (JWT) para o usuario
             const token = jwt.sign(
                 // payload
-                {id: usuario.id, nome: usuario.nome, email: usuario.email},
+                {
+                    id: usuario.id_usuario, 
+                    nome: usuario.nome, 
+                    email: usuario.email
+                },
                 // chave
                 SECRET_KEY,
                 // tempo ate ser expirado
-                {expiresIn: "1h"}
+                {
+                    expiresIn: "1h"
+                }
             )
 
-            // return res.status(200).json({message: "Login relizado com sucesso"})
-            return res.status(200).json({message: "Login relizado com sucesso", token})
+            return res.status(200).json(
+                { 
+                    token, 
+                    id_usuario: usuario.id_usuario, 
+                    nome: usuario.nome, 
+                    email: usuario.email,
+                    tipo_acesso: usuario.tipo_acesso,
+                }
+            )
 
         } catch (error) {
             console.error("Erro ao realizar login: ", error)
@@ -222,6 +241,28 @@ class rotasUsuarios {
             return res.status(500).json({message: "Erro ao desativar usuário", error: error.message})            
         }
     }
+}
+
+// funçao middleware para proteger rotas privadas
+export function autenticarToken(req, res, next) {
+    // extrair o cabecalho (header) da requisiçao do token
+    const token = req.headers["authorization"] // Bearer<token>
+    console.log(token)
+    // verificar se o token foi fornecido na requisicao
+    if (!token) return res.status(403).json({mensagem: "Token não fornecido"}) // nao preciso abrir {} no if se houver apenas uma linha de comando
+    console.log("Passou do if")
+    // verificar se o token é valido — jwt.verify que valida se o token é legitimo
+    jwt.verify(token.split(" ")[1], SECRET_KEY, (err, usuario) => {
+        // se der erro
+        if (err) return res.status(403).json({mensagem: "Token inválido"}) 
+
+        // se o token for valido, adiciona os dados do usuario (decodificados no token), tornando essas informaçoes disponiveis nas rotas que precisam da autenticaçao
+        
+        req.usuario = usuario
+        next()
+    })
+    console.log("Passou do jwt")
+    
 }
 
 export default rotasUsuarios
