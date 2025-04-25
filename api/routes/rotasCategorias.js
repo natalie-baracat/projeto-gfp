@@ -99,8 +99,6 @@ class rotasCategorias {
         }
     }
 
-
-
     // rota de inativaçao
     static async desativarCategoria(req, res) {
         const {id_categoria} = req.params
@@ -118,6 +116,43 @@ class rotasCategorias {
         } catch (error) {
             console.error("Erro ao desativar categoria: ", error)
             return res.status(500).json({message: "Erro ao desativar categoria", error: error.message})            
+        }
+    }
+
+    // consulta por id
+    static async consultaPorId(req, res) {
+        const { id } = req.params
+        try {
+            const categoria = await BD.query("SELECT * FROM categorias WHERE id_categoria = $1", [id])
+            return res.status(200).json(categoria.rows)
+        } catch (error) {
+            res.status(500).json({message: "Erro ao consultar categoria", error: error.message})
+        }
+    }
+
+    // filtrar por tipo de categoria (feito com ayuda del profe)
+    static async filtrarCategoria(req, res) {
+        // o valor sera enviado por parametro na url, deve ser enviado dessa maneira
+        // ?tipo-transacao=entrada
+        const { tipo_transacao } = req.query
+
+        try {
+            const filtros = []
+            const valores = []
+
+            if (tipo_transacao) {
+                filtros.push(`tipo_transacao = $${valores.length + 1}`) // por exemplo, $3, que receberá o valor ENTRADA ou SAIDA de acordo com nossa query mais abaixo
+                valores.push(tipo_transacao)
+            }
+            const query = `
+                SELECT * FROM categorias
+                ${filtros.length ? `WHERE ${filtros.join(" AND ")}` : ""}
+                ORDER BY id_categoria DESC
+            `
+            const resultado = await BD.query(query, valores)
+            
+        } catch (error) {
+            
         }
     }
 }

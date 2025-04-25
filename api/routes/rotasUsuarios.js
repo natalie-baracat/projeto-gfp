@@ -66,11 +66,11 @@ class rotasUsuarios {
                     email: usuario.email
                 },
                 // chave
-                SECRET_KEY,
+                SECRET_KEY
                 // tempo ate ser expirado
-                {
-                    expiresIn: "1h"
-                }
+                // {
+                //     expiresIn: "1h"
+                // }
             )
 
             return res.status(200).json(
