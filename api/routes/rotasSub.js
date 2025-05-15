@@ -119,6 +119,17 @@ class rotasSubCateg {
             return res.status(500).json({message: "Erro ao desativar subcategoria", error: error.message})            
         }
     }
+
+     // consulta por id
+     static async consultaPorId(req, res) {
+        const { id } = req.params
+        try {
+            const subCateg = await BD.query("SELECT * FROM subcategorias WHERE id_subcategoria = $1", [id])
+            return res.status(200).json(subCateg.rows)
+        } catch (error) {
+            res.status(500).json({message: "Erro ao consultar local da transação", error: error.message})
+        }
+    }
 }
 
 export default rotasSubCateg

@@ -117,6 +117,17 @@ class rotasLocalTransacao {
         }
     }
 
+    // consulta por id
+    static async consultaPorId(req, res) {
+        const { id } = req.params
+        try {
+            const local_trans = await BD.query("SELECT * FROM local_transacao WHERE id_local_transacao = $1", [id])
+            return res.status(200).json(local_trans.rows)
+        } catch (error) {
+            res.status(500).json({message: "Erro ao consultar local da transação", error: error.message})
+        }
+    }
+
 }
 
 export default rotasLocalTransacao

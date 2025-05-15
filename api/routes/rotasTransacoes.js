@@ -188,6 +188,26 @@ class rotasTransacoes {
             res.status(500).json({message: "Erro ao consultar transação", error: error.message})
         }
     }
+
+      // rota de inativaçao
+    static async desativarSubCateg(req, res) {
+        const {id_sub} = req.params
+        // const { ativo } = req.body // METODO DELETE NÃO TEM BODY!! nessecaso nao posso usar
+
+        try {
+            const resultado = await BD.query (`
+                UPDATE subcategorias
+                SET ativo = FALSE
+                WHERE id_subcategoria = $1
+            `, [id_sub])
+    
+            return res.status(200).json({message: "Subegoria desativada"})
+            
+        } catch (error) {
+            console.error("Erro ao desativar subegoria: ", error)
+            return res.status(500).json({message: "Erro ao desativar subcategoria", error: error.message})            
+        }
+    }
 }
 
 export default rotasTransacoes

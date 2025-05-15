@@ -54,7 +54,7 @@ app.post("/transacoes", rotasTransacoes.novaTransacao)
 app.get("/transacoes", rotasTransacoes.listarTodas)
 app.patch("/transacoes/:id_transacao", rotasTransacoes.atualizarTrans)
 app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)
-app.get("/transacoes/:id", rotasT.consultaPorId)
+app.get("/transacoes/:id", rotasTransacoes.consultaPorId)
 
 const porta = 3000
 app.listen(porta, () => {
