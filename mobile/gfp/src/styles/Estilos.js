@@ -32,7 +32,8 @@ export const Cores = {
     terciaria: "#293d80",
     fundo: "#1B1B1B",
     textos: "#FFFFF9",
-    icones:"rgba(240, 238, 223, 0.79)"
+    textosBaixaOp:"rgba(255, 255, 249, 0.74)",
+    icones:"#FFFFF9"
 
 }
 
@@ -41,24 +42,24 @@ const Estilos = {
         flex: 1,
         width: "100%",
         padding: 24,
-        justifyContent: 'center',
+        justifyContent: "center",
     },
     background: {
-        width: '100%',
+        width: "100%",
       height: undefined,
       aspectRatio: 9 / 16,
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: "center",
+      justifyContent: "center",
     },
     titulo: {
         fontSize: 20,
         color: Cores.textos,
-        textAlign: 'center',
+        textAlign: "center",
         marginBottom: 32,
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
     containerInput: {
-        backgroundColor: "rgba(223, 167, 246, 0.13)",
+        backgroundColor: "rgba(224, 167, 246, 0.08)",
         borderRadius: 8,
         paddingHorizontal: 16,
         paddingVertical: 12,
@@ -66,25 +67,31 @@ const Estilos = {
         color: Cores.textos,
         marginBottom: 16,
         display: "flex",
-        flexDirection: "row"
-
+        flexDirection: "row",
+        justifyContent: "spaceAround"
+    },
+    textoInput: {
+        color: Cores.textos,
+        border: "none !important",
+        width: "100%",
+        marginLeft: 12
     },
     botao: {
         backgroundColor: "linear-gradient(0deg,rgba(42, 0, 84, 1) 5%, rgba(113, 0, 144, 1) 61%)",
         paddingVertical: 14,
         borderRadius: 8,
-        alignItems: 'center',
+        alignItems: "center",
         marginTop: 8,
     },
     textoBotao: {
         color: Cores.textos,
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
-    textoInput: {
-        color: Cores.textos,
-        border: "none !important",
-        width: "70%"
+    containerLembrarMostrar: {
+        flexDirection: "row",
+        marginBottom: 20,
+        justifyContent: "space-between"
     }
 }
 
