@@ -4,8 +4,8 @@ import cors from "cors"
 import rotasUsuarios, { autenticarToken } from "./routes/rotasUsuarios.js"
 import rotasCategorias from "./routes/rotasCategorias.js"
 import rotasSubCateg from "./routes/rotasSub.js"
-import rotasLocalTransacao from "./routes/rotasLocalTransacao.js"
 import rotasTransacoes from "./routes/rotasTransacoes.js"
+import rotasContas from "./routes/rotasContas.js"
 
 const app = express()
 testarConexao()
@@ -43,11 +43,11 @@ app.delete("/subcategorias/:id_sub", rotasSubCateg.desativarSubCateg)
 app.get("/subcategorias/:id", rotasSubCateg.consultaPorId)
 
 // ROTAS LOCAL TRANSAÇAO
-app.post("/local-transacao", rotasLocalTransacao.novoLocalTrans)
-app.get("/local-transacao", rotasLocalTransacao.listarTodas)
-app.patch("/local-transacao/:id", rotasLocalTransacao.atualizarLocalTrans)
-app.delete("/local-transacao/:id", rotasLocalTransacao.desativarLocalTrans)
-app.get("/local-transacao/:id", rotasLocalTransacao.consultaPorId)
+app.post("/contas", rotasContas.novaConta)
+app.get("/contas", rotasContas.listarTodas)
+app.patch("/contas/:id", rotasContas.atualizarConta)
+app.delete("/contas/:id", rotasContas.desativarConta)
+app.get("/contas/:id", rotasContas.consultaPorId)
 
 // ROTAS TRANSAÇAO
 app.post("/transacoes", rotasTransacoes.novaTransacao)

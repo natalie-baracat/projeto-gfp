@@ -1,18 +1,20 @@
+// feito por natalie dyva
+
 import { BD } from "../db.js";
 
 class rotasTransacoes {
     // nova categoria
     static async novaTransacao(req, res) {
-        const { valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_local_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual } = req.body
+        const { valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_conta, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual } = req.body
         try {
             const transacao = await BD.query(`
-                INSERT INTO transacoes(valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_local_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual)
+                INSERT INTO transacoes(valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_conta, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual)
                     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-                `, [valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_local_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual])
+                `, [valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_conta, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual])
 
             // outro jeito: 
-            // const query = `INSERT INTO categorias(valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_local_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual) VALUES($1, $2, $3, $4)`
-            // const valores = [valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_local_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual]
+            // const query = `INSERT INTO categorias(valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_conta, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual) VALUES($1, $2, $3, $4)`
+            // const valores = [valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_conta, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual]
             // const resposta = await BD.query(query, valores)
 
             res.status(201).json("transação cadastrada com sucesso")
@@ -35,7 +37,7 @@ class rotasTransacoes {
                         usr.nome,
                         trans.valor, 
                         trans.tipo_transacao,
-                        local.saldo,
+                        contas.saldo,
                         trans.descricao, 
                         trans.num_parcelas,
                         trans.parcela_atual,
@@ -44,11 +46,11 @@ class rotasTransacoes {
                         trans.data_transacao,
                         trans.data_vencimento,
                         trans.data_pagamento,
-                        local.nome AS local_transacao
+                        contas.nome AS conta
 	
                 FROM transacoes AS trans
 
-                INNER JOIN local_transacao AS local ON trans.id_local_transacao = local.id_local_transacao
+                INNER JOIN contas ON trans.id_conta = contas.id_conta
                 INNER JOIN categorias AS cat ON trans.id_categoria = cat.id_categoria
                 INNER JOIN usuarios as usr ON trans.id_usuario = usr.id_usuario 
                 LEFT JOIN subcategorias AS subcat ON trans.id_subcategoria = subcat.id_subcategoria
@@ -69,7 +71,7 @@ class rotasTransacoes {
     // funçao para atualizar os valores individualmente caso necessario
     static async atualizarTrans(req, res) {
         const { id_transacao } = req.params
-        const { valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual } = req.body
+        const { valor, descricao, data_vencimento, data_pagamento, tipo_transacao, id_categoria, id_subcategoria, id_usuario, num_parcelas, parcela_atual, id_conta} = req.body
 
         try {
             // inicializa arrays para armazenar os campos (ex: nome, email) e valores (ex: $1, $2, ... $n) a serem atualizados
@@ -125,6 +127,11 @@ class rotasTransacoes {
             if (parcela_atual !== undefined) {
             campos.push(`parcela_atual = $${valores.length + 1}`)
             valores.push(parcela_atual)
+            }
+            
+            if (id_conta !== undefined) {
+            campos.push(`id_conta = $${valores.length + 1}`)
+            valores.push(id_conta)
             }
 
             if(campos.length === 0) {

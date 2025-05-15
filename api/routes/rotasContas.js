@@ -1,21 +1,21 @@
 import { BD } from "../db.js";
 
-class rotasLocalTransacao {
+class rotasContas {
     // nova categoria
-    static async novoLocalTrans(req, res) {
-        const { nome, tipo_local, saldo } = req.body
+    static async novaConta(req, res) {
+        const { nome, tipo_conta, saldo } = req.body
         try {
-            const localTransacao = await BD.query(`
-                INSERT INTO local_transacao(nome, tipo_local, saldo)
+            const contas = await BD.query(`
+                INSERT INTO contas(nome, tipo_conta, saldo)
                     VALUES($1, $2, $3)
-                `, [nome, tipo_local, saldo])
+                `, [nome, tipo_conta, saldo])
 
             // outro jeito: 
-            // const query = `INSERT INTO categorias(nome, id_local_transacao, tipo_local, saldo) VALUES($1, $2, $3, $4)`
-            // const valores = [nome, id_local_transacao, tipo_local, saldo]
+            // const query = `INSERT INTO categorias(nome, id_conta, tipo_conta, saldo) VALUES($1, $2, $3, $4)`
+            // const valores = [nome, id_conta, tipo_conta, saldo]
             // const resposta = await BD.query(query, valores)
 
-            res.status(201).json("cadastrada com sucesso")
+            res.status(201).json("Conta cadastrada com sucesso")
         } catch (error) {
             console.error("Erro ao criar", error)
             res.status(500).json({
@@ -27,12 +27,12 @@ class rotasLocalTransacao {
 
     static async listarTodas(req, res) {
         try {
-            const local_transacao = await BD.query(`
-                SELECT id_local_transacao, nome, tipo_local, saldo 
-                FROM local_transacao
+            const contas = await BD.query(`
+                SELECT id_conta, nome, tipo_conta, saldo 
+                FROM contas
                 WHERE ativo = true
                 `)
-            return res.status(200).json(local_transacao.rows)
+            return res.status(200).json(contas.rows)
         } catch (error) {
             res.status(500).json({message:
                 "Erro ao listar  — ", error: error.message
@@ -42,9 +42,9 @@ class rotasLocalTransacao {
 
     // rota de atualizaçao INDIVIDUAL
     // funçao para atualizar os valores individualmente caso necessario
-    static async atualizarLocalTrans(req, res) {
+    static async atualizarConta(req, res) {
         const { id } = req.params
-        const { nome, tipo_local, saldo } = req.body
+        const { nome, tipo_conta, saldo } = req.body
 
         try {
             // inicializa arrays para armazenar os campos (ex: nome, email) e valores (ex: $1, $2, ... $n) a serem atualizados
@@ -57,9 +57,9 @@ class rotasLocalTransacao {
                 valores.push(nome)
             }
             
-            if (tipo_local !== undefined) {
-                campos.push(`tipo_local = $${valores.length + 1}`)
-                valores.push(tipo_local)
+            if (tipo_conta !== undefined) {
+                campos.push(`tipo_conta = $${valores.length + 1}`)
+                valores.push(tipo_conta)
             }
 
             if (saldo !== undefined) {
@@ -75,9 +75,9 @@ class rotasLocalTransacao {
             valores.push(id)
 
             // montamos a query dinamicamente
-            const query = `UPDATE local_transacao
+            const query = `UPDATE contas
                             SET ${campos.join(", ")}
-                            WHERE id_local_transacao = $${valores.length}
+                            WHERE id_conta = $${valores.length}
                             RETURNING *`
 
             // executando nossa query
@@ -85,7 +85,7 @@ class rotasLocalTransacao {
 
             // verifica se o sub foi atualizado
             if(sub.rows.length === 0) {
-                return res.status(404).json({message: " não encontrado"})
+                return res.status(404).json({message: " não encontrada"})
             }
 
             // se tudo der certo
@@ -98,21 +98,21 @@ class rotasLocalTransacao {
     }
 
     // rota de inativaçao
-    static async desativarLocalTrans(req, res) {
+    static async desativarConta(req, res) {
         const { id } = req.params
         // const { ativo } = req.body // METODO DELETE NÃO TEM BODY!! nessecaso nao posso usar
 
         try {
             const resultado = await BD.query (`
-                UPDATE local_transacao
+                UPDATE contas
                 SET ativo = FALSE
-                WHERE id_local_transacao = $1
+                WHERE id_conta = $1
             `, [id])
     
-            return res.status(200).json({message: "Local transacao desativada"})
+            return res.status(200).json({message: "Conta desativada"})
             
         } catch (error) {
-            console.error("Erro ao desativar Local transacao: ", error)
+            console.error("Erro ao desativar Conta: ", error)
             return res.status(500).json({message: "Erro ao desativar", error: error.message})            
         }
     }
@@ -121,13 +121,13 @@ class rotasLocalTransacao {
     static async consultaPorId(req, res) {
         const { id } = req.params
         try {
-            const local_trans = await BD.query("SELECT * FROM local_transacao WHERE id_local_transacao = $1", [id])
+            const local_trans = await BD.query("SELECT * FROM contas WHERE id_conta = $1", [id])
             return res.status(200).json(local_trans.rows)
         } catch (error) {
-            res.status(500).json({message: "Erro ao consultar local da transação", error: error.message})
+            res.status(500).json({message: "Erro ao consultar conta", error: error.message})
         }
     }
 
 }
 
-export default rotasLocalTransacao
+export default rotasContas
