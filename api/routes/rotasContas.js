@@ -128,6 +128,28 @@ class rotasContas {
         }
     }
 
+     // filtrar por tipo 
+    static async filtrarConta(req, res) {
+        const { nome } = req.query
+
+        try {
+            const query = `
+                SELECT * FROM  contas 
+                WHERE nome LIKE $1 AND ativo = true
+                ORDER BY id_conta DESC
+            `
+            const valores = [`%${nome}%`] // antes eu tava colocando direto na query (LIKE '%$1%'), por isso tava dando erro
+
+            const resposta = await BD.query(query, valores)
+
+            return res.status(200).json(resposta.rows)
+        } catch (error) {
+            console.error("Erro ao filtrar conta", error)
+            res.status(500).json({message: "Erro ao filtrar conta", error: error.message})
+        }
+    }
+
+
 }
 
 export default rotasContas

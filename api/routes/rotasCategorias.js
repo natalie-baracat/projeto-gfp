@@ -132,29 +132,25 @@ class rotasCategorias {
 
     // filtrar por tipo de categoria (feito com ayuda del profe)
     static async filtrarCategoria(req, res) {
-        // o valor sera enviado por parametro na url, deve ser enviado dessa maneira
-        // ?tipo-transacao=entrada
         const { tipo_transacao } = req.query
 
         try {
-            const filtros = []
-            const valores = []
-
-            if (tipo_transacao) {
-                filtros.push(`tipo_transacao = $${valores.length + 1}`) // por exemplo, $3, que receberá o valor ENTRADA ou SAIDA de acordo com nossa query mais abaixo
-                valores.push(tipo_transacao)
-            }
             const query = `
-                SELECT * FROM categorias
-                ${filtros.length ? `WHERE ${filtros.join(" AND ")}` : ""}
+                SELECT * FROM  categorias 
+                WHERE tipo_transacao = $1 AND ativo = true
                 ORDER BY id_categoria DESC
             `
-            const resultado = await BD.query(query, valores)
-            
+            const valores = [tipo_transacao]
+
+            const resposta = await BD.query(query, valores)
+
+            return res.status(200).json(resposta.rows)
         } catch (error) {
-            
+            console.error("Erro ao filtrar categoria", error)
+            res.status(500).json({message: "Erro ao filtrar categoria", error: error.message})
         }
     }
+
 }
 
 export default rotasCategorias
