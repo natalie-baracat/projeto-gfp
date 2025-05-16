@@ -1,40 +1,62 @@
 export const Cores = {
     principal: "#710090",
     secundaria: "#ffb20c",
+    terciaria: "#293d80",
     fundo: "#1B1B1B",
-    textos: "#FFFFF9"
-}
+    textos: "#FFFFF9",
+    textosBaixaOp: "rgba(255, 255, 249, 0.74)",
+    icones: "#FFFFF9"
+};
 
 const Estilos = {
     conteudo: {
-        flex: 1,
-        margin: 0,
-        width: "30%",
-        height: "100%",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
         justifyContent: "center",
+        width: "100%",
+        minHeight: "100vh",
         backgroundColor: Cores.fundo,
-        marginTop: "100px"
+        padding: "24px",
+        boxSizing: "border-box"
     },
     loginTitle: {
         textAlign: "center",
         fontSize: "30px",
-        marginBottom: "10px",
-        marginTop: "10px",
-        color: Cores.secundaria
-    },
-    btnEntrar: {
-        backgroundColor: Cores.principal
+        color: Cores.secundaria,
+        marginBottom: "24px"
     },
     inputDados: {
-        padding: "5px 8px",
-        marginBottom: "10px",
-        border: "none !important",
-        borderBottom: "2px !important",
-        borderStyle: "solid",
-        borderColor: Cores.principal
+        width: "100%",
+        padding: "12px 16px",
+        fontSize: "14px",
+        marginBottom: "16px",
+        borderRadius: "8px",
+        border: "1px solid #ccc",
+        backgroundColor: "rgba(224, 167, 246, 0.08)",
+        color: Cores.textos,
+        outline: "none",
+    },
+    containerLembrarMostrar: {
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+        alignItems: "center",
+        marginBottom: "20px",
+        fontSize: "14px",
+        color: Cores.textosBaixaOp
+    },
+    btnEntrar: {
+        background: "linear-gradient(0deg, rgba(42, 0, 84, 1) 5%, rgba(113, 0, 144, 1) 61%)",
+        color: Cores.textos,
+        padding: "14px",
+        borderRadius: "8px",
+        border: "none",
+        cursor: "pointer",
+        fontWeight: "bold",
+        fontSize: "16px",
+        width: "100%"
     }
-}
+};
 
-export default Estilos
+export default Estilos;

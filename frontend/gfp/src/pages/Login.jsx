@@ -1,13 +1,28 @@
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { enderecoServidor } from "../utils/Utils"
-import React, { useState } from "react";
-import Estilos, { Cores } from "../components/Estilos";
+import React, { useState, useEffect } from "react";
+import Estilos from "../components/Estilos";
 
 export default function Login() {
     const navigate = useNavigate()
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [mensagem, setMensagem] = useState('')
+    const [email, setEmail] = useState("douglas.camata@gmail.com")
+    const [senha, setSenha] = useState("123")
+    const [mensagem, setMensagem] = useState("")
+    const [lembrar, setLembrar] = useState(false)
+
+    useEffect(() => {
+        const buscarUsuarioLogado = async () => {
+            const usuarioLogado = await localStorage.getItem("UsuarioLogado")
+            if (usuarioLogado) {
+                const usuario = JSON.parse(usuarioLogado)
+                if (usuario.lembrar == true) {
+                    navigate("/principal")
+                }
+            }
+        }
+
+        buscarUsuarioLogado()
+    }, [])
 
     const botaoEntrar = async (e) => {
         e.preventDefault()
@@ -36,7 +51,7 @@ export default function Login() {
 
             if (resposta.ok) {
                 const dados = await resposta.json()
-                localStorage.setItem("infoUsuarioLogado", JSON.stringify(dados))
+                localStorage.setItem("UsuarioLogado", JSON.stringify({ ...dados, lembrar }))
                 navigate("/principal")
             } else {
                 setMensagem("Email ou senha incorretos")
@@ -50,9 +65,9 @@ export default function Login() {
     }
 
     const limpaForm = () => {
-        setEmail('')
-        setSenha('');
-        setMensagem('')
+        setEmail("")
+        setSenha("");
+        setMensagem("")
     }
 
     // nao precisava mas quis fazer hehe
@@ -68,17 +83,51 @@ export default function Login() {
             <div>
                 <h1 style={Estilos.loginTitle}>Boas vindas novamente!</h1>
 
-                <p>E-mail</p>
-                <input style={Estilos.inputDados} onChange={(escritaEmail) => setEmail(escritaEmail.target.value)} value={email} type="text" placeholder='email@sesi.org.br' />
+                <p style={{ color: "#fff", width: "100%" }}>E-mail</p>
+                <input
+                    style={Estilos.inputDados}
+                    onChange={(escritaEmail) => setEmail(escritaEmail.target.value)}
+                    value={email}
+                    type="text"
+                    placeholder="email@sesi.org.br"
+                />
 
-                <p>Senha</p>
-                <input style={Estilos.inputDados} onChange={(escritaSenha) => setSenha(escritaSenha.target.value)}
-                    onKeyDown={(e) => enterLogin(e)} value={senha} type="password" placeholder='*********' />
+                <p style={{ color: "#fff", width: "100%" }}>Senha</p>
+                <input
+                    style={Estilos.inputDados}
+                    onChange={(escritaSenha) => setSenha(escritaSenha.target.value)}
+                    onKeyDown={(e) => enterLogin(e)}
+                    value={senha}
+                    type="password"
+                    placeholder="*********"
+                />
 
-                <p>{mensagem}</p>
+                <p style={{ color: "red" }}>{mensagem}</p>
             </div>
 
-            <button onClick={botaoEntrar}>Entrar</button>
+            <div style={Estilos.containerLembrarMostrar}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <input
+                        type="checkbox"
+                        name="lembrar"
+                        id="lembrar"
+                        value={lembrar}
+                        checked={lembrar}
+                        onChange={(e) => setLembrar(e.target.checked)}
+                    />
+                    <label htmlFor="lembrar" style={{ color: "#fff" }}>Lembre-se de mim</label>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <button style={{
+                        background: "none",
+                        border: "none",
+                        color: "#aaa",
+                        cursor: "pointer"
+                    }}>Esqueceu a senha?</button>
+                </div>
+            </div>
+
+            <button onClick={botaoEntrar} style={Estilos.btnEntrar}>Entrar</button>
         </div>
     )
 }
