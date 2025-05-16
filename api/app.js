@@ -50,8 +50,9 @@ app.patch("/contas/:id", rotasContas.atualizarConta)
 app.delete("/contas/:id", rotasContas.desativarConta)
 app.get("/contas/:id", rotasContas.consultaPorId)
 
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS TRANSAÇAO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS TRANSAÇOES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 app.post("/transacoes", rotasTransacoes.novaTransacao)
+app.get("/transacoes/filtrar-por-data", rotasTransacoes.filtrarPorData)
 app.get("/transacoes", rotasTransacoes.listarTodas)
 app.patch("/transacoes/:id_transacao", rotasTransacoes.atualizarTrans)
 app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)

@@ -197,24 +197,61 @@ class rotasTransacoes {
     }
 
       // rota de inativaçao
-    static async desativarSubCateg(req, res) {
+    static async desativarTrans(req, res) {
         const {id_sub} = req.params
         // const { ativo } = req.body // METODO DELETE NÃO TEM BODY!! nessecaso nao posso usar
 
         try {
             const resultado = await BD.query (`
-                UPDATE subcategorias
+                UPDATE transacoes
                 SET ativo = FALSE
-                WHERE id_subcategoria = $1
+                WHERE id_transacao = $1
             `, [id_sub])
     
-            return res.status(200).json({message: "Subegoria desativada"})
+            return res.status(200).json({message: "transação desativada"})
             
         } catch (error) {
-            console.error("Erro ao desativar subegoria: ", error)
-            return res.status(500).json({message: "Erro ao desativar subcategoria", error: error.message})            
+            console.error("Erro ao desativar transação: ", error)
+            return res.status(500).json({message: "Erro ao desativar transação", error: error.message})            
         }
     }
+
+    // filtrar por data de vencimento ou pagamento ou um intervalo especifico
+    static async filtrarPorData(req, res) {
+        const { data_inicio, data_fim, tipo_data } = req.query
+
+        let colunaData 
+
+        if (tipo_data == "vencimento") {
+            colunaData = "data_vencimento"
+        }
+        else if (tipo_data == "pagamento") {
+            colunaData = "data_pagamento"
+        } else {
+            return res.status(400).json({
+                message: 'Tipo de data inválido — utilize "vencimento" ou "pagamento"'
+            })
+        }
+
+        try {
+            const query = `
+                SELECT trans.*, u.nome AS nome_usuario, contas.nome
+                FROM transacoes AS trans
+                LEFT JOIN usuarios AS u ON trans.id_usuario = u.id_usuario
+                JOIN contas ON trans.id_conta = contas.id_conta
+                WHERE ${colunaData} BETWEEN $1 AND $2
+                ORDER BY ${colunaData} ASC
+            `
+
+            const transacoes =  await BD.query(query, [data_inicio, data_fim])
+
+            res.status(200).json(transacoes.rows)
+        } catch (error) {
+            console.error("Erro ao filtrar transação: ", error)
+            return res.status(500).json({message: "Erro ao filtrar transação", error: error.message})   
+        }
+    }
+
 }
 
 export default rotasTransacoes
