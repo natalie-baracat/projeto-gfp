@@ -252,6 +252,81 @@ class rotasTransacoes {
         }
     }
 
+    // somando transaçoes entrada e saida
+    static async somarTrans(req, res) {
+        const { tipo, id_usuario } = req.query
+
+        try {
+            const tipoTransacao = tipo.toUpperCase()
+
+            const query = `
+                SELECT SUM(valor) AS total
+                FROM transacoes
+                WHERE tipo_transacao = $1 AND id_usuario = $2
+            `
+
+            const resultado = await BD.query(query, [tipoTransacao, id_usuario])
+
+            let total = resultado.rows[0].total
+
+            // retorna 0 se o total for NULO
+            if (total == null) {
+                total = 0
+            }
+
+            res.status(200).json({total: parseFloat(total)})
+            
+        } catch (error) {
+            console.error("Erro ao somar transaçoes: ", error)
+            return res.status(500).json({message: "Erro ao somar transaçoes", error: error.message})  
+        }
+    }
+
+    static async transacoesVencidas(req, res) { // heito com ayuda del profe ricardón
+        const { id_usuario } = req.params
+
+        try {
+            const query = `
+                SELECT 
+                    trans.valor, trans.data_transacao, trans.data_vencimento, trans.data_pagamento,
+                    u.nome AS nome_usuario,
+                    c.nome AS nome_conta,
+                    cat.nome AS nome_categoria,
+                    sub.nome AS nome_subcategoria
+                FROM transacoes AS trans
+                LEFT JOIN usuarios AS u ON trans.id_usuario = u.id_usuario
+                LEFT JOIN contas AS c ON trans.id_conta = c.id_conta
+                LEFT JOIN categorias AS cat ON trans.id_categoria = cat.id_categoria
+                LEFT JOIN subcategorias AS sub ON trans.id_subcategoria = sub.id_subcategoria
+                WHERE trans.data_vencimento < CURRENT_DATE                        -- filtra as transacoes vencidas
+                AND trans.id_usuario = $1
+                ORDER BY trans.data_vencimento ASC
+            `
+
+            const resultado = await BD.query(query, [id_usuario])
+
+            // funçao para formatar a data
+            const formatarDataBr = (data) => {
+                if (!data) return null // se nao houver data retorna nulo
+
+                return new Date(data).toLocaleDateString("pt-BR") // converte a data pra o padrao BR
+            }
+
+            // atribui nossa data formatada para ser exibida
+            const dadosFormatados =  resultado.rows.map(t => ({
+                ...t, // copia todas as propriedades originais da resultado para a t
+                data_transacao: formatarDataBr(t.data_transacao),
+                data_vencimento: formatarDataBr(t.data_vencimento),
+                data_pagamento: formatarDataBr(t.data_pagamento)
+            }))
+
+            return res.status(200).json(dadosFormatados)
+        } catch (error) {
+            console.error("Erro ao filtrar transaçoes vencidas: ", error)
+            return res.status(500).json({message: "Erro ao filtrar transaçoes vencidas", error: error.message})   
+        }
+    }
+
 }
 
 export default rotasTransacoes

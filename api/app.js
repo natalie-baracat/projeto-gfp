@@ -30,33 +30,35 @@ app.get("/usuarios/:id", rotasUsuarios.consultaPorId)
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS CATEGORIAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 app.post("/categorias", rotasCategorias.novaCategoria)
 app.get("/categorias/filtrar-categoria", rotasCategorias.filtrarCategoria)
-app.get("/categorias", autenticarToken, rotasCategorias.listarTodas)
+app.get("/categorias", rotasCategorias.listarTodas)
 app.patch("/categorias/:id_categoria", rotasCategorias.atualizarCategoria)
 // app.put("/categorias/:id_categoria", rotasCategorias.atualizarTodosCampos)
 app.get("/categorias/:id", rotasCategorias.consultaPorId)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS SUBCATEGORIAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 app.post("/subcategorias", rotasSubCateg.novaSubCateg)
-app.get("/subcategorias", autenticarToken, rotasSubCateg.listarTodas)
+app.get("/subcategorias", rotasSubCateg.listarTodas)
 app.patch("/subcategorias/:id_sub", rotasSubCateg.atualizarSubCateg)
 app.delete("/subcategorias/:id_sub", rotasSubCateg.desativarSubCateg)
 app.get("/subcategorias/:id", rotasSubCateg.consultaPorId)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS CONTAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+app.get("/contas", autenticarToken, rotasContas.listarTodas)
 app.post("/contas", rotasContas.novaConta)
 app.get("/contas/filtrar-nome", rotasContas.filtrarConta)
-app.get("/contas", rotasContas.listarTodas)
 app.patch("/contas/:id", rotasContas.atualizarConta)
 app.delete("/contas/:id", rotasContas.desativarConta)
 app.get("/contas/:id", rotasContas.consultaPorId)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS TRANSAÇOES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 app.post("/transacoes", rotasTransacoes.novaTransacao)
-app.get("/transacoes/filtrar-por-data", rotasTransacoes.filtrarPorData)
+app.get("/transacoes/filtrar-data", rotasTransacoes.filtrarPorData)
+app.get("/transacoes/somar-transacoes", rotasTransacoes.somarTrans)
+app.get("/transacoes/transacoes-vencidas/:id_usuario", rotasTransacoes.transacoesVencidas)
 app.get("/transacoes", rotasTransacoes.listarTodas)
-app.patch("/transacoes/:id_transacao", rotasTransacoes.atualizarTrans)
-app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)
-app.get("/transacoes/:id", rotasTransacoes.consultaPorId)
+// app.patch("/transacoes/:id_transacao", rotasTransacoes.atualizarTrans)
+// app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)
+// app.get("/transacoes/:id", rotasTransacoes.consultaPorId)
 
 const porta = 3000
 app.listen(porta, () => {
