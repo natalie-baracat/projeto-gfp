@@ -158,7 +158,7 @@ export default function Login({ navigation }) {
                         colors={['#2a0054', '#710090']} // Define as cores do gradiente
                         start={[0, 0]} // Posição inicial do gradiente
                         end={[1, 0]} // Posição final do gradiente
-                        style={Estilos.botao}
+                        style={Estilos.btnEntrar}
                     >
                         <Text style={Estilos.textoBotao}>Entrar</Text>
                     </LinearGradient>

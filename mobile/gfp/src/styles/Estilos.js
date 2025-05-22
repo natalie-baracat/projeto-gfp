@@ -33,11 +33,13 @@ export const Cores = {
     fundo: "#1B1B1B",
     textos: "#FFFFF9",
     textosBaixaOp:"rgba(255, 255, 249, 0.74)",
-    icones:"#FFFFF9"
+    icones:"#FFFFF9",
+    branco: "#fff"
 
 }
 
 const Estilos = {
+    /* LOGIN */
     conteudo: {
         flex: 1,
         width: "100%",
@@ -76,7 +78,7 @@ const Estilos = {
         width: "100%",
         marginLeft: 12
     },
-    botao: {
+    btnEntrar: {
         backgroundColor: "linear-gradient(0deg,rgba(42, 0, 84, 1) 5%, rgba(113, 0, 144, 1) 61%)",
         paddingVertical: 14,
         borderRadius: 8,
@@ -92,6 +94,39 @@ const Estilos = {
         flexDirection: "row",
         marginBottom: 20,
         justifyContent: "space-between"
+    },
+
+    /* TELA PRINCIPAL */
+    conteudoHeader: {
+        flex: 1,
+        backgroundColor: Cores.principal
+    },
+    conteudoCorpo: {
+        flex: 1,
+        backgroundColor: Cores.branco,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        padding: 15
+    },
+    imagemLista: {
+        width: 35,
+        height: 35,
+        marginRight: 10
+    },
+    itemLista: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ccc",
+        paddingVertical: 7
+    },
+    textoListaContainer: {
+        flex: 1
+    },
+    nomeLista: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: Cores.secundaria
     }
 }
 
