@@ -47,7 +47,7 @@ app.get("/contas", autenticarToken, rotasContas.listarTodas)
 app.post("/contas", rotasContas.novaConta)
 app.get("/contas/filtrar-nome", rotasContas.filtrarConta)
 app.patch("/contas/:id", rotasContas.atualizarConta)
-app.delete("/contas/:id", rotasContas.desativarConta)
+app.delete("/contas/:id", autenticarToken, rotasContas.desativarConta)
 app.get("/contas/:id", rotasContas.consultaPorId)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS TRANSAÇOES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
