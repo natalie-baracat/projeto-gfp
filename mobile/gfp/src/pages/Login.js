@@ -21,8 +21,8 @@ import { LinearGradient } from "expo-linear-gradient"
 
 export default function Login({ navigation }) {
 
-    const [email, setEmail] = useState("douglas.camata@gmail.com")
-    const [senha, setSenha] = useState("123")
+    const [email, setEmail] = useState("missdiagnosis@ppth")
+    const [senha, setSenha] = useState("jw")
     const [mostraSenha, setMostraSenha] = useState(false)
     const [isActive, setIsActive] = useState(false)
     const [lembrar, setLembrar] = useState(false)

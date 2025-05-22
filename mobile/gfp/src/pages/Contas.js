@@ -12,14 +12,15 @@ export default function Contas({navigation}) {
         
     const buscarDadosAPI = async () => {
         try {
-            const resposta = await fetch(`${enderecoServidor}/contas,
+            const resposta = await fetch(`${enderecoServidor}/contas`, {
                 method: "GET",
                 headers: {
-                    'Authorization': Bearer ${usuario.token}
+                    "Authorization": `Bearer ${usuario.token}`
                 } 
-            `)
+            })
 
             const dados = await resposta.json()
+            setDadosLista(dados)
 
             setDadosLista(dados)
         } catch (error) {
@@ -64,12 +65,12 @@ export default function Contas({navigation}) {
 
     const botaoExcluir = async (id) => {
         try {
-            const resposta = await fetch(`${enderecoServidor}/contas/${id},
+            const resposta = await fetch(`${enderecoServidor}/contas/${id}`, {
                 method: "DELETE",
                 headers: {
-                    'Authorization': Bearer ${usuario.token}
+                    "Authorization": `Bearer ${usuario.token}`
                 } 
-            `)
+        })
 
             if (resposta.ok) {
                 buscarDadosAPI()
