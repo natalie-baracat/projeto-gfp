@@ -126,7 +126,23 @@ const Estilos = {
     nomeLista: {
         fontSize: 16,
         fontWeight: "bold",
+        // color: Cores.secundaria
+    },
+    corLista1: {
         color: Cores.secundaria
+    },
+    corLista2: {
+        color: Cores.terciaria
+    },
+    // CADASTRO CONTAS
+    inputCad: {
+        marginTop: 5,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: "#fff"
     }
 }
 
