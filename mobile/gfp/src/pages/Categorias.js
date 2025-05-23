@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react"
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native"
+import { View, Text, FlatList, TouchableOpacity, RefreshControl } from "react-native"
 
 import Estilos, { Cores } from "../styles/Estilos"
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -13,8 +13,8 @@ import CadCategorias from "./CadCategorias";
 export default function Categorias({navigation}) {
     const [dadosLista, setDadosLista] = useState([])
     const [usuario, setUsuario] = useState({})
-    
-        
+    const [atualizando, setAtualizando] = useState(false)
+            
     const buscarDadosAPI = async () => {
         try {
             const resposta = await fetch(`${enderecoServidor}/categorias`, {
@@ -59,7 +59,7 @@ export default function Categorias({navigation}) {
                 colocar uma view com background color: cor do banco de dados
                 e uma imagem dentro com o icone do banco de dados  */}
 
-                <View style={{padding: 8, borderRadius: 50, marginRight: 8, backgroundColor: `${item.cor}`}}>
+                <View style={{padding: 8, borderRadius: 20, marginRight: 8, backgroundColor: `${item.cor}`}}>
                     <FontAwesome6
                         name={item.icone} 
                         size={17} 
@@ -133,7 +133,15 @@ export default function Categorias({navigation}) {
                     data={dadosLista}
                     renderItem={exibirItensLista}
                     keyExtractor={(item) => item.id_categoria}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={atualizando}
+                            onRefresh={buscarDadosAPI}
+                            colors={[Cores.terciaria]}
+                        />
+                    }
                 />
+
             </View>
         </View>
     )
