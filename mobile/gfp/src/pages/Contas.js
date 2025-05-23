@@ -1,14 +1,22 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import React, { useState, useEffect, useLayoutEffect } from "react"
+import { useIsFocused } from "@react-navigation/native";
 import { View, Text, FlatList, Image, TouchableOpacity } from "react-native"
+
 import Estilos, { Cores } from "../styles/Estilos"
-import { enderecoServidor } from "../utils"
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
+import CadContas from "./CadContas"
+
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { enderecoServidor } from "../utils"
 
 
 export default function Contas({navigation}) {
     const [dadosLista, setDadosLista] = useState([])
     const [usuario, setUsuario] = useState({})
+    
+    // hook que verifica se a tela está em foco
+    const isFocused = useIsFocused()
         
     const buscarDadosAPI = async () => {
         try {
@@ -35,8 +43,10 @@ export default function Contas({navigation}) {
 
     // executa a funçao sempre que ocorrer uma alteraçao na variavel usuario
     useEffect(() => {
-        buscarDadosAPI()
-    }, [usuario] ) 
+        if (isFocused == true) {
+            buscarDadosAPI()   
+        }    
+    }, [usuario]) 
 
     const buscarUsuarioLogado = async () => {
             const usuarioLogado = await AsyncStorage.getItem("UsuarioLogado")
@@ -51,13 +61,24 @@ export default function Contas({navigation}) {
         return (
             <TouchableOpacity style={Estilos.itemLista}>
                 <Image source={require("../assets/logo.png")} style={Estilos.imagemLista} />
+                
                 <View style={Estilos.textoListaContainer}>
+                    <Text style={[Estilos.nomeLista, Estilos.corLista1]}>{item.nome}</Text>
                     <Text>{item.tipo_conta}</Text>
-                    <Text style={Estilos.nomeLista}>{item.nome}</Text>
                 </View>
-                <MaterialIcons name="edit" size={24} color={Cores.terciaria}/>
-                <MaterialIcons name="delete" size={24} color={Cores.terciaria}
-                onPress={() => botaoExcluir(item.id_conta)}
+
+                <MaterialIcons
+                    name="edit" 
+                    size={24} 
+                    color={Cores.terciaria}
+                    onPress={() => navigation.navigate("CadContas", {Conta: item})}
+                />
+                    
+                <MaterialIcons
+                    name="delete" 
+                    size={24} 
+                    color={Cores.terciaria}
+                    onPress={() => botaoExcluir(item.id_conta)}
                 />
             </TouchableOpacity>
         )
@@ -72,6 +93,8 @@ export default function Contas({navigation}) {
                 } 
         })
 
+            if(!confirm("Tem certeza que deseja excluir?")) return;
+
             if (resposta.ok) {
                 buscarDadosAPI()
             }
@@ -80,6 +103,18 @@ export default function Contas({navigation}) {
             console.error("Erro ao excluir")
         }
     }
+
+    // para o botao de + na header
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity onPress={() => {navigation.navigate("CadContas")}}>
+                    <MaterialIcons name="add" size={28} color={Cores.branco} style={{marginRight: 8}}/>
+                </TouchableOpacity>
+            )
+        })
+    }, [navigation])
+
     return (
         <View style={Estilos.conteudoHeader}>
             <View style={Estilos.conteudoCorpo}>

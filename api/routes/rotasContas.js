@@ -3,16 +3,16 @@ import { BD } from "../db.js";
 class rotasContas {
     // nova categoria
     static async novaConta(req, res) {
-        const { nome, tipo_conta, saldo } = req.body
+        const { nome, tipo_conta, saldo, conta_padrao } = req.body
         try {
             const contas = await BD.query(`
-                INSERT INTO contas(nome, tipo_conta, saldo)
-                    VALUES($1, $2, $3)
-                `, [nome, tipo_conta, saldo])
+                INSERT INTO contas(nome, tipo_conta, saldo, conta_padrao)
+                    VALUES($1, $2, $3, $4)
+                `, [nome, tipo_conta, saldo, conta_padrao])
 
             // outro jeito: 
-            // const query = `INSERT INTO categorias(nome, id_conta, tipo_conta, saldo) VALUES($1, $2, $3, $4)`
-            // const valores = [nome, id_conta, tipo_conta, saldo]
+            // const query = `INSERT INTO categorias(nome, id_conta, tipo_conta, saldo, conta_padrao) VALUES($1, $2, $3, $4)`
+            // const valores = [nome, id_conta, tipo_conta, saldo, conta_padrao]
             // const resposta = await BD.query(query, valores)
 
             res.status(201).json("Conta cadastrada com sucesso")
@@ -28,7 +28,7 @@ class rotasContas {
     static async listarTodas(req, res) {
         try {
             const contas = await BD.query(`
-                SELECT id_conta, nome, tipo_conta, saldo 
+                SELECT id_conta, nome, tipo_conta, saldo
                 FROM contas
                 WHERE ativo = true
                 `)
@@ -44,7 +44,7 @@ class rotasContas {
     // funçao para atualizar os valores individualmente caso necessario
     static async atualizarConta(req, res) {
         const { id } = req.params
-        const { nome, tipo_conta, saldo } = req.body
+        const { nome, tipo_conta, saldo, campo_padrao } = req.body
 
         try {
             // inicializa arrays para armazenar os campos (ex: nome, email) e valores (ex: $1, $2, ... $n) a serem atualizados
@@ -65,6 +65,11 @@ class rotasContas {
             if (saldo !== undefined) {
                 campos.push(`saldo = $${valores.length + 1}`)
                 valores.push(saldo)
+            }
+
+            if (campo_padrao !== undefined) {
+                campos.push(`campo_padrao = $${valores.length + 1}`)
+                valores.push(campo_padrao)
             }
 
             if(campos.length === 0) {
