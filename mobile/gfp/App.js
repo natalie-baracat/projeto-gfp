@@ -7,8 +7,6 @@ import MenuDrawer from "./src/components/MenuDrawer";
 import Login from "./src/pages/Login";
 import CadContas from "./src/pages/CadContas";
 import { Cores } from "./src/styles/Estilos";
-import CadCategorias from "./src/pages/CadCategorias";
-
 
 
 const Stack = createNativeStackNavigator();
@@ -40,7 +38,6 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="MenuDrawer" component={MenuDrawer} options={{ headerShown: false }} />
         <Stack.Screen name="CadContas" component={CadContas} options={{ title: "Cadastro de Conta" }} />
-        <Stack.Screen name="CadCategorias" component={CadCategorias} options={{ title: "Cadastro de Conta" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -143,6 +143,62 @@ const Estilos = {
         borderRadius: 5,
         padding: 10,
         backgroundColor: "#fff"
+    },
+    modalFundo: {
+        flex: 1,
+        justifyContent: "flex-end",
+        backgroundColor: "rgba(27, 3, 51, 0.07)",
+        backdropFilter: "blur(2px)"
+    },
+    modalConteudo: {
+        backgroundColor: Cores.principal,
+        padding: 16,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25
+    },
+    modalTitulo: {
+        fontSize: 18,
+        color: Cores.branco,
+        marginBottom: 16
+    },
+    modalInput: {
+        backgroundColor: Cores.branco,
+        padding: 8,
+        borderRadius: 8,
+        flex: 1
+    },
+    modalBotoes: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        marginTop: 16
+    },
+    corBotao: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        margin: 8,
+        borderWidth: 2,
+        borderColor: Cores.branco
+    },
+    iconeBotao: {
+        width: 40,
+        height: 40,
+        padding: 8,
+        borderRadius: 20,
+        backgroundColor: "#333",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    SeletorContainer: {
+        backgroundColor: "#1e1e1e",
+        padding: 16,
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16
+    },
+    listaModal: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+
     }
 }
 

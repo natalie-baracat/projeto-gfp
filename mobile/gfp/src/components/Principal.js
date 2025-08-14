@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Text, View, TouchableOpacity } from "react-native"
+import { Text, View, TouchableOpacity, Image } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Cores } from "../styles/Estilos"
 
@@ -34,7 +34,9 @@ export default function Principal({ navigation }) {
                         <Text style={{color: Cores.textos}}>Sair</Text>
                 </TouchableOpacity>
             </View>
-            <Text>Principal</Text>
+
+            <Image source={require("../assets/essa_e_a_melhor_imagem_que_eu_vi.jpg")} style={{width: 300, height: 297}} />
+
         </View>
     )
 }
