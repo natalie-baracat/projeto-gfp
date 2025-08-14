@@ -9,7 +9,7 @@ export const Cores = {
 const Estilos = {
     container: {
         minHeight: '100vh',
-        backgroundColor: Cores.fundo,
+        // backgroundColor: Cores.fundo,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -37,7 +37,7 @@ const Estilos = {
         marginBottom: '1rem',
         borderRadius: '8px',
         border: '1px solid #444',
-        backgroundColor: '#1f1f1f',
+        backgroundColor: "rgba(31, 31, 31, 0.31)",
         color: Cores.textos,
         fontSize: '1rem',
         outline: 'none',

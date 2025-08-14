@@ -1,33 +1,37 @@
-import { useState, useEffect } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import { useState, useEffect, useContext } from "react"
+import { UsuarioContext } from "../UsuarioContext"
+import { useNavigate, Link, Routes, Route, useLocation } from "react-router-dom"
+import Dashboard from "./Dashboard"
+import logo from "../assets/logo.png"
+import { MdAdd, MdClose, MdGridView, MdLogout } from "react-icons"
 
-export default function Principal({ navigation }) {
-    const [usuario, setUsuario] = useState({})
+export default function Principal() {
+    const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext)
+
+    const [menuAberto, setMenuAberto] = useState(false);
+
     const navigate = useNavigate()
 
+    const location = useLocation() // obtem localizaçao atual
+
     useEffect(()=> {
-        const buscarUsuarioLogado = async () => {
-            const usuarioLogado = await localStorage.getItem("UsuarioLogado")
-            if (usuarioLogado) { // se usuarioLogado NAO estiver vazio
-                setUsuario(JSON.parse(usuarioLogado))
-            } else {
-                navigate("/")
-            }
+        if (!dadosUsuario && !carregando) { // se nao houver dados de usuario (null) e se nao estiver carregando
+            navigate("/login")
         }
-        buscarUsuarioLogado()
-    }, [])
+    }, [dadosUsuario, carregando, navigate])
 
     const botaoLogout = () => {
         localStorage.removeItem("UsuarioLogado")
-        navigate("/")
+        setDadosUsuario(null)
+        navigate("/login")
     }
 
     return (
         <div>
-            <div>
-                <span>Usuário: {usuario.nome} </span>
-                {/* também da pra fazer assim (se eu fosse deixar o useState la em cima como (null). signifia: "se usuario nao for null" */}
-                {/* <span>Usuário: {usuario?.nome} </span>*/} 
+            <div flex h-screen font-sans bg-gradient>
+
+                 {/* ? significa que se os dados for nulo, apenas deixara em branco, em vez de dar erro */}
+                {/* <span>Usuário: {dadosUsuario?.nome} </span> */}
 
                 <button onClick={botaoLogout}>Sair</button>
             </div>
