@@ -2,6 +2,7 @@ import express from "express"
 import { testarConexao } from "./db.js"
 import cors from "cors"
 import rotasUsuarios, { autenticarToken } from "./routes/rotasUsuarios.js"
+
 import rotasCategorias from "./routes/rotasCategorias.js"
 import rotasSubCateg from "./routes/rotasSub.js"
 import rotasTransacoes from "./routes/rotasTransacoes.js"
@@ -38,6 +39,7 @@ app.get("/categorias", rotasCategorias.listarTodas)
 app.patch("/categorias/editar/:id_categoria", rotasCategorias.atualizarCategoria)
 // app.put("/categorias/:id_categoria", rotasCategorias.atualizarTodosCampos)
 app.get("/categorias/:id", rotasCategorias.consultaPorId)
+app.delete("/categorias/:id_categoria", rotasCategorias.desativarCategoria)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ROTAS SUBCATEGORIAS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 app.post("/subcategorias", rotasSubCateg.novaSubCateg)
