@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { enderecoServidor } from "../utils/Utils";
 import React, { useState, useEffect, useContext } from "react";
 import { UsuarioContext } from "../UsuarioContext";
-UsuarioContext
+import { enderecoServidor } from "../utils/Utils.jsx";
+
 
 export default function Login() {
     const { dadosUsuario, setDadosUsuario} = useContext(UsuarioContext)
@@ -125,7 +125,7 @@ export default function Login() {
         loginButton: {
             width: "100%",
             padding: "0.8rem",
-            backgroundColor: "#4CAF50",
+            backgroundColor: "#710090",
             border: "none",
             borderRadius: "5px",
             color: "white",
