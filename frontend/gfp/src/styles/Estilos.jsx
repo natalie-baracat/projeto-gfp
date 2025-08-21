@@ -6,7 +6,7 @@ export const Cores = {
     icones:"rgba(240, 238, 223, 0.79)"
 }
 
-const Estilos = {
+export const Estilos = {
     container: {
         minHeight: '100vh',
         // backgroundColor: Cores.fundo,
@@ -57,5 +57,10 @@ const Estilos = {
         cursor: 'pointer',
         marginTop: '0.5rem',
         fontWeight: 'bold',
-    }
+    },
+    //começamos a usar tailwind
+    botaoCadastro: "sm:w-auto bg-[#710090] text-white px-4 py-2 rounded-lg hover:brightness-75 flex items-center justify-center shadow-sm",
+    linhaListagem: "flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow my-2",
+    botaoAlterar: "flex items-center p-1 text-blue-400 bg-blue-100 hover:bg-blue-200 rounded-md transition-colors",
+    botaoExcluir: "flex items-center p-1 text-rose-400 bg-rose-100 hover:bg-rose-200 rounded-md transition-colors"
 };
