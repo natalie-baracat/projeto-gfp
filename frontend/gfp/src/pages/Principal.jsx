@@ -46,13 +46,13 @@ export default function Principal() {
             </div>
             
             {/* Sidebar */}
-            <section className={`fixed top-0 left-0 h-full w-64 bg-[#710090]/70 rounded-br-2xl rounded-tr-2xl border-r-yellow-100/70 border-r-1 lg:border-none backdrop-blur-sm
+            <section className={`fixed top-0 left-0 h-full w-64 bg-[#50065c]/70 rounded-br-2xl rounded-tr-2xl border-r-yellow-200/70 border-r-1  backdrop-blur-sm
                 text-gray-200 flex flex-col z-40 transform transition-transform
                 md:relative md:w-20 lg:w-64 md:translate-x-0 
                 ${menuAberto == true ? 'translate-x-0' : '-translate-x-full'}
                 `}>
                 <div className='flex justify-between items-center mb-6 p-4 
-                                    border-b border-slate-700'>
+                                    border-b border-[#710090]/90'>
                     <div className='flex gap-2 items-center'>
                         <img src={logo} alt='Logo GFP' className='w-8 h-8' />
                         <span className='text-xl font-bold md:hidden lg:block'>GFP</span>
@@ -111,8 +111,8 @@ export default function Principal() {
                         </Link>
                     </div>
                 </nav>
-                <div className='p-4 lg:p-6 border-t border-slate-700 bg-cyan-600
-                        hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded-lg m-4
+                <div className='p-4 lg:p-6 border-t border-yellow-200/70 bg-[#b30098]
+                        hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg m-4
                 '>
                     <button className='flex w-full items-center justify-center'>
                         <MdAdd className='w-8 h-8' />
@@ -152,7 +152,8 @@ export default function Principal() {
                         <Route path='/' element={<Dashboard />} />
                         <Route path='/dashboard' element={<Dashboard />} />
                         <Route path='/contas' element={<Contas />} />
-                        <Route path='/criar-conta' element={<CadContas />} />
+                        <Route path='/contas/new' element={<CadContas />} />
+                        <Route path='/contas/editar' element={<CadContas />} />
                     </Routes>
                 </main>
 

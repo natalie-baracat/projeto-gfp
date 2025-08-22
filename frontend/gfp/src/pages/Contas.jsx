@@ -9,6 +9,8 @@ export default function Contas() {
     const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext);
     const [dadosLista, setDadosLista] = useState([]);
 
+    const navigate = useNavigate();
+
     const buscarDadosAPI = async () => {
         try {
             const resposta = await fetch(`${enderecoServidor}/contas`, {
@@ -84,7 +86,7 @@ export default function Contas() {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                    <button className={Estilos.botaoAlterar}><MdEdit className="h-6 w-6" /></button>
+                    <button className={Estilos.botaoAlterar} onClick={() => navigate("/contas/editar", { state: {itemAlterar: item}})} ><MdEdit className="h-6 w-6" /></button>
                     <button className={Estilos.botaoExcluir} onClick={() => botaoExcluir(item.id_conta)}><MdDelete className="h-6 w-6" /></button>
                 </div>
             </div>
@@ -97,7 +99,7 @@ export default function Contas() {
             <section className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold text-gray-800">Gerenciar Contas</h3>
-                    <button onClick={() => navigate("/cadcontas")} className={Estilos.botaoCadastro}>
+                    <button onClick={() => navigate("/contas/new")} className={Estilos.botaoCadastro}>
                         <MdAdd className="h-8 w-8" /> Nova conta
                     </button>
                 </div>
