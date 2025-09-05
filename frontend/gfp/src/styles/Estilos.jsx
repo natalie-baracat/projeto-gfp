@@ -66,5 +66,5 @@ export const Estilos = {
     labelCadastro: "block mb-1",
     inputCadastro: "w-full bg-white/35 px-4 py-2 rounded-lg shadow-sm  focus:outline-none focus:ring-1 focus:ring-[#ffb20c]",
     botaoOutline: "flex items-center gap-2 px-4 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-200 hover:cursor-pointer",
-    botao: "flex items-center gap-2 px-4 py-2 bg-[#710090] text-white/90 rounded-lg hover:bg-gray-200 hover:cursor-pointer"
+    botao2: "flex items-center gap-2 px-4 py-2 bg-[#710090] text-white/90 rounded-lg hover:bg-gray-200 hover:cursor-pointer"
 };

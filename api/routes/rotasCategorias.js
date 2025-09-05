@@ -3,12 +3,12 @@ import { BD } from "../db.js";
 class rotasCategorias {
     // nova categoria
     static async novaCategoria(req, res) {
-        const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
+        const { nome, tipo_transacao, gasto_fixo, id_usuario, cor } = req.body
         try {
             const categoria = await BD.query(`
-                INSERT INTO categorias(nome, tipo_transacao, gasto_fixo, id_usuario)
-                    VALUES($1, $2, $3, $4)
-                `, [nome, tipo_transacao, gasto_fixo, id_usuario])
+                INSERT INTO categorias(nome, tipo_transacao, gasto_fixo, id_usuario, cor)
+                    VALUES($1, $2, $3, $4, $5)
+                `, [nome, tipo_transacao, gasto_fixo, id_usuario, cor])
 
             // outro jeito: 
             // const query = `INSERT INTO categorias(nome, tipo_transacao, gasto_fixo, id_usuario) VALUES($1, $2, $3, $4)`
@@ -41,7 +41,7 @@ class rotasCategorias {
     // funçao para atualizar os valores individualmente caso necessario
     static async atualizarCategoria(req, res) {
         const { id_categoria } = req.params
-        const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body
+        const { nome, tipo_transacao, gasto_fixo, id_usuario, cor } = req.body
 
         try {
             // inicializa arrays para armazenar os campos (ex: nome, email) e valores (ex: $1, $2, ... $n) a serem atualizados
@@ -67,6 +67,11 @@ class rotasCategorias {
             if (id_usuario !== undefined) {
                 campos.push(`id_usuario = $${valores.length + 1}`)
                 valores.push(id_usuario)
+            }
+            
+            if (cor !== undefined) {
+                campos.push(`cor = $${valores.length + 1}`)
+                valores.push(cor)
             }
 
             if(campos.length === 0) {

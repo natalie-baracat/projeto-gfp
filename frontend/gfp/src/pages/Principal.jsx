@@ -11,6 +11,7 @@ import {
 } from 'react-icons/md';
 import Contas from './Contas';
 import CadContas from './CadContas';
+import Categorias from './Categorias';
 
 export default function Principal() {
     const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext);
@@ -46,7 +47,7 @@ export default function Principal() {
             </div>
             
             {/* Sidebar */}
-            <section className={`fixed top-0 left-0 h-full w-64 bg-[#50065c]/70 rounded-br-2xl rounded-tr-2xl border-r-yellow-200/70 border-r-1  backdrop-blur-sm
+            <section className={`fixed top-0 left-0 h-full w-64 bg-[#710090]/70 rounded-br-2xl rounded-tr-2xl border-r-yellow-200/70 border-r-1  backdrop-blur-sm
                 text-gray-200 flex flex-col z-40 transform transition-transform
                 md:relative md:w-20 lg:w-64 md:translate-x-0 
                 ${menuAberto == true ? 'translate-x-0' : '-translate-x-full'}
@@ -154,6 +155,7 @@ export default function Principal() {
                         <Route path='/contas' element={<Contas />} />
                         <Route path='/contas/new' element={<CadContas />} />
                         <Route path='/contas/editar' element={<CadContas />} />
+                        <Route path='/categorias' element={<Categorias />} />
                     </Routes>
                 </main>
 

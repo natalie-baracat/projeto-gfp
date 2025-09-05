@@ -31,6 +31,7 @@ class rotasContas {
                 SELECT id_conta, nome, tipo_conta, saldo
                 FROM contas
                 WHERE ativo = true
+                ORDER BY nome
                 `)
             return res.status(200).json(contas.rows)
         } catch (error) {

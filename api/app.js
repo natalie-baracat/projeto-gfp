@@ -52,7 +52,7 @@ app.get("/subcategorias/:id", rotasSubCateg.consultaPorId)
 app.get("/contas", autenticarToken, rotasContas.listarTodas)
 app.post("/contas/new", rotasContas.novaConta)
 app.get("/contas/filtrar-nome", rotasContas.filtrarConta)
-app.patch("/contas/editar/:id", rotasContas.atualizarConta)
+app.put("/contas/editar/:id", rotasContas.atualizarConta)
 app.delete("/contas/:id", autenticarToken, rotasContas.desativarConta)
 app.get("/contas/:id", rotasContas.consultaPorId)
 
