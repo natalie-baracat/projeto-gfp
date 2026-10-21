@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Estilos } from "../styles/Estilos.jsx"
 import { MdAdd, MdEdit, MdDelete, MdExpandMore, MdChevronRight } from "react-icons/md";
 import CategoriasModal from "./CategoriasModal.jsx";
+import SubCategoriasModal from "./SubcategoriasModal.jsx";
+
 
 
 export default function Categorias() {
@@ -207,7 +209,7 @@ export default function Categorias() {
             <div className="bg-gray-50 p-4 mt-2 ml-10 rounded-lg border border-gray-200">
                 <div className="flex justify-between items-center mb-3">
                     <h4 className="font-bold text-gray-700" >Subcategorias de {categoria.nome}</h4>
-                    <button className="bg-purple-400 px-2 py-1 rounded-md flex items-center" onClick={botaoNovaSubcategoria}>
+                    <button className="bg-purple-400 px-2 py-1 rounded-md flex items-center cursor-pointer" onClick={botaoNovaSubcategoria}>
                         <MdAdd className="h-5 w-5 mr-1" /> Nova subcategoria
                     </button>
                 </div>

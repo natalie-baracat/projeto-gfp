@@ -29,45 +29,108 @@ class rotasTransacoes {
     }
 
     // rota de leitura
-    static async listarTodas(req, res) {
-        try {
-            const transacao = await BD.query(`
-                SELECT 
-                    	trans.id_transacao, 
-                        usr.nome,
-                        trans.valor, 
-                        trans.tipo_transacao,
-                        contas.saldo,
-                        trans.descricao, 
-                        trans.num_parcelas,
-                        trans.parcela_atual,
-                        cat.nome AS categoria,
-                        subcat.nome AS subcategoria,
-                        trans.data_transacao,
-                        trans.data_vencimento,
-                        trans.data_pagamento,
-                        contas.nome AS conta
+    // static async listarTodas(req, res) { // MINHA VERSAO ORIGINAL
+    //     try {
+    //         const transacao = await BD.query(`
+    //             SELECT 
+    //                 	trans.id_transacao, 
+    //                     usr.nome,
+    //                     trans.valor, 
+    //                     trans.tipo_transacao,
+    //                     contas.saldo,
+    //                     trans.descricao, 
+    //                     trans.num_parcelas,
+    //                     trans.parcela_atual,
+    //                     cat.nome AS categoria,
+    //                     subcat.nome AS subcategoria,
+    //                     trans.data_transacao,
+    //                     trans.data_vencimento,
+    //                     trans.data_pagamento,
+    //                     contas.nome AS conta
 	
-                FROM transacoes AS trans
+    //             FROM transacoes AS trans
 
-                INNER JOIN contas ON trans.id_conta = contas.id_conta
-                INNER JOIN categorias AS cat ON trans.id_categoria = cat.id_categoria
-                INNER JOIN usuarios as usr ON trans.id_usuario = usr.id_usuario 
-                LEFT JOIN subcategorias AS subcat ON trans.id_subcategoria = subcat.id_subcategoria
+    //             INNER JOIN contas ON trans.id_conta = contas.id_conta
+    //             INNER JOIN categorias AS cat ON trans.id_categoria = cat.id_categoria
+    //             INNER JOIN usuarios as usr ON trans.id_usuario = usr.id_usuario 
+    //             LEFT JOIN subcategorias AS subcat ON trans.id_subcategoria = subcat.id_subcategoria
 
-                WHERE usr.ativo = true
+    //             WHERE usr.ativo = true
 
-                `)
-            return res.status(200).json(transacao.rows)
+    //             `)
+    //         return res.status(200).json(transacao.rows)
 
+    //     } catch (error) {
+    //         res.status(500).json({message:
+    //             "Erro ao listar transacao — ", error: error.message
+    //         })            
+    //     }
+    // } 
+
+    static async listarTodas(req, res) { // VERSAO PROF DOUGLAS
+        try {
+        const { dataInicio, dataFim} = req.query
+        /* é a mesma coisa de: 
+        dataInicio = req.query.dataInicio
+        */
+
+        console.log("🕵️ Recebendo parâmetros do frontend:", { dataInicio, dataFim });
+        const transacoes = await BD.query(`
+                SELECT t. *, u.nome AS nome_usuario, lt.nome AS nome_conta, ct.icone, ct.cor, ct.nome AS nome_categoria, sct.nome AS nome_subcategoria, ct.icone, ct.cor
+                FROM transacoes AS t
+                LEFT JOIN usuarios u ON t.id_usuario = u.id_usuario
+                INNER JOIN contas lt on t.id_conta = lt.id_conta
+                INNER JOIN categorias ct on t.id_categoria = ct.id_categoria
+                INNER JOIN subcategorias sct on t.id_subcategoria = sct.id_subcategoria
+                WHERE t.data_vencimento BETWEEN $1 AND $2
+                ORDER BY t.data_vencimento DESC`, [dataInicio, dataFim]);
+
+        console.log(`📦 Transações encontradas: ${transacoes.rowCount}`);
+        
+        res.status(200).json(transacoes.rows);
         } catch (error) {
-            res.status(500).json({message:
-                "Erro ao listar transacao — ", error: error.message
-            })            
+        console.error("Erro ao listar locais:", error);
+        res.status(500).json({ message: "Erro ao listar locais", error: error.message });
         }
-    } 
+    }
 
-        // rota de atualizaçao INDIVIDUAL
+//     static async listarTodas(req, res) { // VERSAO CHAT
+//     try {
+//         const { dataInicio, dataFim } = req.query;
+
+//         const query = `
+//             SELECT 
+//                 t.id_transacao,
+//                 t.descricao,
+//                 t.valor,
+//                 t.data_transacao,
+//                 t.data_vencimento,
+//                 t.data_pagamento,
+//                 t.tipo_transacao,
+//                 cat.nome AS nome_categoria,
+//                 s.nome AS nome_subcategoria,
+//                 ct.nome AS nome_conta,
+//                 cat.icone,
+//                 cat.cor
+//             FROM transacoes AS t
+//             INNER JOIN categorias AS cat ON t.id_categoria = cat.id_categoria
+//             INNER JOIN subcategorias AS s ON t.id_subcategoria = s.id_subcategoria
+//             INNER JOIN contas AS ct ON t.id_conta = ct.id_conta
+//             WHERE COALESCE(t.data_transacao, t.data_vencimento) BETWEEN $1 AND $2
+//             ORDER BY COALESCE(t.data_vencimento, t.data_transacao) DESC
+//         `;
+
+//         const transacoes = await BD.query(query, [dataInicio, dataFim]);
+//         res.status(200).json(transacoes.rows);
+//     } catch (error) {
+//         console.error("Erro ao listar transações:", error);
+//         res.status(500).json({ message: "Erro ao listar transações", error: error.message });
+//     }
+// }
+
+    
+
+    // rota de atualizaçao INDIVIDUAL
     // funçao para atualizar os valores individualmente caso necessario
     static async atualizarTrans(req, res) {
         const { id_transacao } = req.params
@@ -197,24 +260,24 @@ class rotasTransacoes {
     }
 
       // rota de inativaçao
-    static async desativarTrans(req, res) {
-        const {id_sub} = req.params
-        // const { ativo } = req.body // METODO DELETE NÃO TEM BODY!! nessecaso nao posso usar
+    // static async desativarTrans(req, res) {
+    //     const {id_sub} = req.params
+    //     // const { ativo } = req.body // METODO DELETE NÃO TEM BODY!! nessecaso nao posso usar
 
-        try {
-            const resultado = await BD.query (`
-                UPDATE transacoes
-                SET ativo = FALSE
-                WHERE id_transacao = $1
-            `, [id_sub])
+    //     try {
+    //         const resultado = await BD.query (`
+    //             UPDATE transacoes
+    //             SET ativo = FALSE
+    //             WHERE id_transacao = $1
+    //         `, [id_sub])
     
-            return res.status(200).json({message: "transação desativada"})
+    //         return res.status(200).json({message: "transação desativada"})
             
-        } catch (error) {
-            console.error("Erro ao desativar transação: ", error)
-            return res.status(500).json({message: "Erro ao desativar transação", error: error.message})            
-        }
-    }
+    //     } catch (error) {
+    //         console.error("Erro ao desativar transação: ", error)
+    //         return res.status(500).json({message: "Erro ao desativar transação", error: error.message})            
+    //     }
+    // }
 
     // filtrar por data de vencimento ou pagamento ou um intervalo especifico
     static async filtrarPorData(req, res) {
@@ -282,7 +345,7 @@ class rotasTransacoes {
         }
     }
 
-    static async transacoesVencidas(req, res) { // heito com ayuda del profe ricardón
+    static async transacoesVencidas(req, res) { // hecho com ayuda del profe ricardón
         const { id_usuario } = req.params
 
         try {
@@ -327,6 +390,87 @@ class rotasTransacoes {
         }
     }
 
+    static async dadosDashboard(req, res) {
+        try {
+            const { dataInicio, dataFim } = req.query
+
+            // query para KPIs (indicadores)
+            const kpisQuery = `
+                SELECT
+                    COALESCE(SUM(CASE WHEN tipo_transacao = 'ENTRADA' THEN valor ELSE 0 END), 0) AS receitas,
+                    COALESCE(SUM(CASE WHEN tipo_transacao = 'SAIDA' THEN valor ELSE 0 END), 0) AS despesas
+                FROM transacoes
+                WHERE data_vencimento BETWEEN $1 AND $2
+            `
+
+            // query para o grafico de categorias
+            const categoriasQuery = `
+                SELECT c.nome, SUM(valor)::float AS valor 
+                    FROM transacoes AS t
+                    INNER JOIN categorias AS c ON t.id_categoria = c.id_categoria
+                    WHERE t.data_vencimento BETWEEN $1 AND $2
+                    GROUP BY c.nome
+                    ORDER BY valor DESC
+            `
+
+            // query para o grafico de categorias
+            const subcategoriasQuery = `
+                SELECT s.nome, SUM(valor)::float AS valor 
+                    FROM transacoes AS t
+                    INNER JOIN subcategorias AS s ON t.id_subcategoria = s.id_subcategoria
+                    WHERE t.data_vencimento BETWEEN $1 AND $2
+                    GROUP BY s.nome
+                    ORDER BY valor DESC
+            `
+            
+            // query para o grafico de categorias
+            const vencimentosQuery = `
+                SELECT t.valor, t.data_vencimento, t.descricao, sct.nome AS nome_subcategoria, ct.icone, ct.cor
+                    FROM transacoes AS t
+                    INNER JOIN categorias ct on t.id_categoria = ct.id_categoria
+                    INNER JOIN subcategorias sct on t.id_subcategoria = sct.id_subcategoria
+                    WHERE t.data_vencimento BETWEEN $1 AND $2 AND t.data_pagamento IS NULL
+                    ORDER BY t.data_vencimento
+            `
+
+            const evolucao6mesesQuery = `
+                SELECT
+                    TO_CHAR(t.data_vencimento, 'MM/YYYY') AS mes,
+                    SUM(CASE WHEN t.tipo_transacao = 'ENTRADA' THEN t.valor ELSE 0 END) AS total_receitas,
+                    SUM(CASE WHEN t.tipo_transacao = 'SAIDA' THEN t.valor ELSE 0 END) AS total_despesas
+                FROM transacoes AS t
+                JOIN categorias ct ON t.id_categoria = ct.id_categoria
+                JOIN subcategorias sct ON t.id_subcategoria = sct.id_subcategoria
+                WHERE 
+                    t.data_vencimento >= (CURRENT_DATE - INTERVAL '6 months')
+                GROUP BY TO_CHAR(t.data_vencimento, 'MM/YYYY')
+                ORDER BY TO_DATE(TO_CHAR(t.data_vencimento, 'MM/YYYY'), 'MM/YYYY');
+        `
+
+            // executando todas as queries em paralelo para otimizar
+            // armazenando TODAS essas leitura do BD dentro dessas constantes 
+            const [kpis, categorias, subcategorias, vencimentos, evolucao6meses] = await Promise.all([
+                BD.query(kpisQuery, [dataInicio, dataFim]),
+                BD.query(categoriasQuery, [dataInicio, dataFim]),
+                BD.query(subcategoriasQuery, [dataInicio, dataFim]),
+                BD.query(vencimentosQuery, [dataInicio, dataFim]),
+                BD.query(evolucao6mesesQuery)
+            ])
+
+            res.status(200).json({
+                kpis: kpis.rows[0],
+                categorias: categorias.rows,
+                subcategorias: subcategorias.rows,
+                vencimentos: vencimentos.rows,
+                evolucao6meses: evolucao6meses.rows,
+            });
+
+        } catch (error) {
+            console.error("Erro ao listar dados:", error);
+            res.status(500).json({ message: "Erro ao listar dados", error: error.message });
+        }   
+    }
 }
+
 
 export default rotasTransacoes

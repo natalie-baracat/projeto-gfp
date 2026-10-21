@@ -129,7 +129,7 @@ class rotasSubCateg {
         } catch (error) {
             res.status(500).json({message: "Erro ao consultar local da transação", error: error.message})
         }
-    }
+    }    
 }
 
 export default rotasSubCateg

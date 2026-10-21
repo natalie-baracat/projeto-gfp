@@ -60,10 +60,12 @@ app.get("/contas/:id", rotasContas.consultaPorId)
 app.post("/transacoes/new", rotasTransacoes.novaTransacao)
 app.get("/transacoes/filtrar-data", rotasTransacoes.filtrarPorData)
 app.get("/transacoes/somar-transacoes", rotasTransacoes.somarTrans)
+app.get("/transacoes/dados-dashboard", rotasTransacoes.dadosDashboard)
 app.get("/transacoes/transacoes-vencidas/:id_usuario", rotasTransacoes.transacoesVencidas)
 app.get("/transacoes", rotasTransacoes.listarTodas)
 // app.patch("/transacoes/editar/:id_transacao", rotasTransacoes.atualizarTrans)
-// app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)
+// app.patch("/transacoes/editar/:id_transacao", rotasTransacoes.quitarTrans)
+app.delete("/transacoes/:id", rotasTransacoes.desativarTrans)
 // app.get("/transacoes/:id", rotasTransacoes.consultaPorId)
 
 const porta = 3000

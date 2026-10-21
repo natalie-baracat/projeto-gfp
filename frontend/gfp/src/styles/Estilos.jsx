@@ -61,8 +61,9 @@ export const Estilos = {
     //começamos a usar tailwind
     botaoCadastro: "sm:w-auto bg-[#710090] text-white px-4 py-2 rounded-lg hover:bg-[#50065c] hover:cursor-pointer flex items-center justify-center shadow-sm",
     linhaListagem: "flex items-center p-3 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-shadow my-2",
-    botaoAlterar: "flex items-center p-1 text-blue-400 bg-blue-100 hover:bg-blue-200 rounded-md transition-colors",
-    botaoExcluir: "flex items-center p-1 text-rose-400 bg-rose-100 hover:bg-rose-200 rounded-md transition-colors",
+    botaoAlterar: "flex items-center p-1 text-blue-100 bg-blue-400 hover:bg-blue-300 rounded-md transition-colors",
+    botaoExcluir: "flex items-center p-1 text-rose-100 bg-rose-400 hover:bg-rose-300 rounded-md transition-colors",
+    botaoQuitar: "flex items-center p-1 text-green-100 bg-[#17df05] hover:bg-green-300 rounded-md transition-colors",
     labelCadastro: "block mb-1",
     inputCadastro: "w-full bg-white/35 px-4 py-2 rounded-lg shadow-sm  focus:outline-none focus:ring-1 focus:ring-[#ffb20c]",
     botaoOutline: "flex items-center gap-2 px-4 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-200 hover:cursor-pointer",

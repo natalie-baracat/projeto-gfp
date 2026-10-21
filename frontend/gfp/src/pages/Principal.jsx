@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UsuarioContext } from '../UsuarioContext'
 import { useNavigate, Link, Routes, Route, useLocation } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import logo from '../assets/logo.png'
 import {
     MdAccountBalance,
     MdAdd, MdAttachMoney, MdAutoGraph, MdCached, MdClose, MdCreditCard, MdEmail, MdFeaturedPlayList, MdGridView, MdLogout,
@@ -12,8 +11,10 @@ import {
 import Contas from './Contas';
 import CadContas from './CadContas';
 import Categorias from './Categorias';
+import Transacoes from './Transacoes';
 
 export default function Principal() {
+    
     const { dadosUsuario, setDadosUsuario, carregando } = useContext(UsuarioContext);
 
     const [menuAberto, setMenuAberto] = useState(false);
@@ -55,7 +56,7 @@ export default function Principal() {
                 <div className='flex justify-between items-center mb-6 p-4 
                                     border-b border-[#710090]/90'>
                     <div className='flex gap-2 items-center'>
-                        <img src={logo} alt='Logo GFP' className='w-8 h-8' />
+                        <img src='/logo.png' alt='Logo GFP' className='w-8 h-8' />
                         <span className='text-xl font-bold md:hidden lg:block'>GFP</span>
                     </div>
                     <button className='md:hidden' onClick={() => setMenuAberto(false)}>
@@ -113,17 +114,17 @@ export default function Principal() {
                     </div>
                 </nav>
                 <div className='p-4 lg:p-6 border-t border-yellow-200/70 bg-[#b30098]
-                        hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg m-4
+                        hover:brightness-105 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-lg m-4
                 '>
                     <button className='flex w-full items-center justify-center'>
                         <MdAdd className='w-8 h-8' />
                         <span className='md:hidden lg:block'>Nova Transação</span>
                     </button>
                 </div>
-                <div className='border-t border-slate-700 pt-4'>
+                <div className='border-t border-[#710090]/90 pt-4'>
                     <div className='flex items-center p-2'>
-                        <MdPeople className='w-10 h-10 p-2 bg-slate-700
-                            text-cyan-400 rounded-full ' />
+                        <MdPeople className='w-10 h-10 p-2 bg-yellow-700
+                            text-yellow-400 rounded-full ' />
                         <div className='ml-3 md:hidden lg:block'>
                             <p className='font-bold text-white'>{dadosUsuario?.nome}</p>
                             <p>{dadosUsuario?.email}</p>                            
@@ -143,7 +144,7 @@ export default function Principal() {
                         <MdMenu className='w-8 h-8' />
                     </button>
                     <div className='flex items-center justify-center flex-1 gap-2 md:hidden'>
-                        <img src={logo} alt="Logo GFP" className='w-8 h-8'  />
+                        <img src='/logo.png' alt="Logo GFP" className='w-8 h-8'  />
                         <span className='font-bold text-xl'>GFP</span>
                     </div>
                 </header>
@@ -156,6 +157,7 @@ export default function Principal() {
                         <Route path='/contas/new' element={<CadContas />} />
                         <Route path='/contas/editar' element={<CadContas />} />
                         <Route path='/categorias' element={<Categorias />} />
+                        <Route path='/transacoes' element={<Transacoes />} />
                     </Routes>
                 </main>
 

@@ -1,4 +1,4 @@
-import { MdBeachAccess } from "react-icons/md";
+import { MdAccountBalance, MdAttachMoney, MdAutoGraph, MdBeachAccess, MdCreditCard, MdEmail, MdFeaturedPlayList } from "react-icons/md";
 import { FaHouseChimney, FaKitMedical, FaTruckPlane, FaUtensils, FaMoneyBillWave, FaPaw, FaPersonSwimming, FaVolleyball, FaCartShopping, FaSeedling, FaScrewdriverWrench, FaDumbbell, FaHouse } from "react-icons/fa6";
 import { FaGraduationCap, FaLaptopHouse } from "react-icons/fa";
 
@@ -39,4 +39,67 @@ export const iconesCategoria = {
 export const tipoTransacao = {
     "SAIDA": true,
     "ENTRADA": false
+}
+
+export const iconesTipoConta = {
+    "CONTA_CORRENTE": <MdAccountBalance className="w-6 h-6"/>,
+    "POUPANCA": <MdEmail className="w-6 h-6"/>,
+    "CARTAO_CREDITO": <MdCreditCard className="w-6 h-6"/>,
+    "CARTAO_DEBITO": <MdFeaturedPlayList className="w-6 h-6"/>,
+    "DINHEIRO": <MdAttachMoney className="w-6 h-6"/>,
+    "INVESTIMENTO": <MdAutoGraph className="w-6 h-6"/>,
+    }
+    
+export const nomesTipoConta = {
+    "CONTA_CORRENTE": "Conta Corrente",
+    "POUPANCA": "Poupança",
+    "CARTAO_CREDITO": "Cartão de crédito",
+    "CARTAO_DEBITO": "Cartão de Débito",
+    "DINHEIRO": "Dinheiro",
+    "INVESTIMENTO": "Investimento",
+}
+
+export const calcularDatasPeriodo = (periodo) => {
+    const hoje = new Date()
+    let dataInicio = new Date()
+    let dataFim = new Date()
+
+    switch (periodo) {
+        case "esteMes":
+            dataInicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1)
+            dataFim = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0) // pega o dia "zero" do proximo mes, ou seja, o ultimo dia do mes atual
+            break;
+        case "mesPassado":
+            dataInicio = new Date(hoje.getFullYear(), hoje.getMonth() - 1, 1)
+            dataFim = new Date(hoje.getFullYear(), hoje.getMonth(), 0)
+            break;
+        case "ultimos7":
+            dataInicio = setDate(hoje.getDate() - 6)
+            dataFim = hoje
+            break;
+        case "ultimos30":
+            dataInicio = setDate(hoje.getDate() - 29)
+            dataFim = hoje
+            break;
+        case "todos":
+            dataInicio = new Date(2000, 1, 1)
+            dataFim = new Date(2100, 12, 31)
+            break;
+    }
+
+    dataInicio = dataInicio.toISOString().split("T")[0]
+    dataFim = dataFim.toISOString().split("T")[0]
+
+    return { dataInicio, dataFim }
+}
+
+export const formatarDinheiro = (valor) => {
+    valor = Number(valor)
+    return valor.toLocaleString("pt-br", {style: "currency", currency: "BRL"})
+    
+}
+
+export const formatarData = (data) => {
+    const dataFormatada = new Date(data);
+    return dataFormatada.toLocaleDateString("pt-BR", {day: "2-digit", month: "2-digit", year: "2-digit"})
 }

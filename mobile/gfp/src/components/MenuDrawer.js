@@ -5,6 +5,7 @@ import { Cores } from "../styles/Estilos"
 import Principal from "./Principal"
 import Contas from "../pages/Contas"
 import Categorias from "../pages/Categorias"
+import Transacoes from "../pages/Transacoes"
 
 const Drawer = createDrawerNavigator()
 
@@ -26,6 +27,7 @@ export default function MenuDrawer() {
             <Drawer.Screen name="Principal" component={Principal}></Drawer.Screen>
             <Drawer.Screen name="Contas" component={Contas}></Drawer.Screen>
             <Drawer.Screen name="Categorias" component={Categorias}></Drawer.Screen>
+            <Drawer.Screen name="Transacoes" component={Transacoes}></Drawer.Screen>
         </Drawer.Navigator>
     )
 }
